@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>GPT 商业计划生成</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    #output { white-space: pre-wrap; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h2>商业计划书生成器</h2>
+  <label for="topic">输入主题（例如：智能冰箱）：</label><br>
+  <textarea id="topic" rows="4" cols="50"></textarea><br><br>
+  <button id="submitBtn">生成计划</button>
+
+  <div id="output"></div>
+
+<script>
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const topic = document.getElementById('topic').value.trim();
+  if (!topic) { return; }
+
+  const response = await fetch('/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ topic: topic })
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    document.getElementById('output').textContent = data.plan;
+  } else {
+    document.getElementById('output').textContent = '生成失败';
+  }
+});
+</script>
+</body>
+</html>
